@@ -1,0 +1,45 @@
+@font-face {
+  font-family: 'Coolvetica';
+  src: url('https://cdn.jsdelivr.net/gh/softwareunderground/brand@master/font/coolvetica.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Coolvetica", "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "Coolvetica", "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+}
+
+body, html, button, input, select, textarea {
+  font-family: 'Coolvetica', "Inter", sans-serif;
+}
+
+@layer utilities {
+  /* Hide scrollbar for Chrome, Safari and Opera */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  /* Hide scrollbar for IE, Edge and Firefox */
+  .no-scrollbar {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}

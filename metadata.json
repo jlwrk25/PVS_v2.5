@@ -1,0 +1,8 @@
+{
+  "name": "Remix: Personal Video Feed V2",
+  "description": "A clean, scroll-based, personal media player for videos and images from Google Drive with smart playlists, search capability, and randomized autoplay.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
