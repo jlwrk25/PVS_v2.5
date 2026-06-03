@@ -1,15 +1,11 @@
 import express from "express";
 import path from "path";
-import { fileURLToPath } from "url";
 import { Readable } from "stream";
 import { createServer as createViteServer } from "vite";
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
 async function startServer() {
   const app = express();
-  const PORT = 3000;
+  const PORT = process.env.PORT || 3000; // Added process.env.PORT to allow Render to assign the port dynamically
 
   // Middleware for parsing JSON requests
   app.use(express.json());
@@ -55,7 +51,7 @@ async function startServer() {
             confirmToken = confirmMatch[1];
           } else {
             const nameConfirmMatch = html.match(/name="confirm"[^>]*?value="([a-zA-Z0-9_-]+)"/i) ||
-                               html.match(/value="([a-zA-Z0-9_-]+)"[^>]*?name="confirm"/i);
+                                     html.match(/value="([a-zA-Z0-9_-]+)"[^>]*?name="confirm"/i);
             if (nameConfirmMatch) {
               confirmToken = nameConfirmMatch[1];
             }
@@ -138,7 +134,7 @@ async function startServer() {
   }
 
   app.listen(PORT, "0.0.0.0", () => {
-    console.log(`Server successfully started on http://0.0.0.0:${PORT}`);
+    console.log(`Server successfully started on port ${PORT}`);
   });
 }
 
