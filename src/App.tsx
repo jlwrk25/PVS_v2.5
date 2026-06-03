@@ -184,12 +184,12 @@ export default function App() {
   const activeItem = feedItems[activeIndex] || null;
 
   return (
-    <main className="fixed inset-0 bg-[#FAF9F6] text-zinc-800 flex flex-col md:flex-row items-center justify-center font-sans overflow-hidden select-none">
+    <main className="fixed inset-0 bg-[#040917] text-slate-100 flex flex-col md:flex-row items-center justify-center font-sans overflow-hidden select-none">
       
       {/* 1. ambient backdrop of the current item for luxurious depth on wider monitors */}
       {activeItem && (
         <div
-          className="absolute inset-0 bg-cover bg-center filter blur-3xl opacity-[0.14] transition-all duration-1000 hidden md:block"
+          className="absolute inset-0 bg-cover bg-center filter blur-3xl opacity-[0.25] transition-all duration-1000 hidden md:block"
           style={{
             backgroundImage: `url(/api/media/${activeItem.id})`,
           }}
@@ -198,64 +198,25 @@ export default function App() {
 
       {/* 2. Side Panel Info Frame - Visible on Desktop only */}
       <div className="absolute left-8 top-8 z-30 hidden lg:flex flex-col gap-4 pointer-events-auto max-w-sm">
-        <div className="flex items-center gap-2 bg-white/75 backdrop-blur-md px-4 py-2 rounded-full border border-zinc-200/60 w-fit shadow-xs">
-          <Sparkles className="h-4 w-4 text-zinc-500 fill-zinc-300" />
-          <span className="text-xs uppercase font-semibold font-mono tracking-widest text-zinc-600">
+        <div className="flex items-center gap-2 bg-[#091124]/85 backdrop-blur-md px-4 py-2 rounded-full border border-slate-800/80 w-fit shadow-lg">
+          <Sparkles className="h-4 w-4 text-cyan-400 fill-cyan-500/20" />
+          <span className="text-xs uppercase font-semibold font-mono tracking-widest text-slate-300">
             PERSONAL SHOWCASE
           </span>
-        </div>
-        
-        {/* Main description block */}
-        <div className="bg-white/70 p-5 rounded-2xl border border-zinc-200/50 backdrop-blur-md shadow-xs">
-          <h1 className="text-xl font-bold tracking-tight bg-gradient-to-r from-zinc-800 to-zinc-600 bg-clip-text text-transparent">
-            Personal Video Feed
-          </h1>
-          <p className="text-xs text-zinc-500 mt-1 font-sans leading-relaxed">
-            Use the arrow keys ( <span className="font-mono text-zinc-400">↑</span> /{" "}
-            <span className="font-mono text-zinc-400">↓</span> ) or mousewheel to scroll.
-            Click a media card to play/pause.
-          </p>
-
-          <div className="mt-4 pt-3 border-t border-zinc-100 flex items-center justify-between">
-            <span className="text-[10px] uppercase font-mono tracking-widest text-zinc-400 font-semibold">
-              Source type:
-            </span>
-            <span className="inline-block text-xs py-1 px-2.5 bg-emerald-500/10 border border-emerald-500/10 rounded-lg text-emerald-600 font-medium tracking-wide font-mono uppercase">
-              {getActivePlaylistName()}
-            </span>
-          </div>
-        </div>
-
-        {/* Informative Folder Context Box */}
-        <div className="bg-white/80 p-5 rounded-2xl border border-zinc-200/55 backdrop-blur-md shadow-xs flex flex-col gap-2">
-          <h2 className="text-xs font-bold text-zinc-700 uppercase tracking-wider font-mono">
-            Drive Source Folder
-          </h2>
-          <p className="text-[11px] text-zinc-500 leading-relaxed font-sans">
-            Streaming media dynamically from Google Drive folder:
-          </p>
-          <a
-            href="https://drive.google.com/drive/folders/1E3a9iO-NhW3s3T75GgZLXodLTxoUj5AB?usp=drive_link"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-[11px] text-blue-600 font-mono break-all hover:underline"
-          >
-            1E3a9iO-NhW3s3T75GgZLXodLTxoUj5AB
-          </a>
         </div>
       </div>
 
       {/* 3. Small, Elegant Header - Small dynamic search bar in the top right */}
       <div className="absolute top-4 right-4 z-40 flex items-center gap-2">
         {/* Compact focused Search Bar */}
-        <div className="relative flex items-center transition-all bg-white/80 border border-zinc-200 rounded-full py-1.5 px-3 shadow-xs focus-within:border-zinc-400">
+        <div className="relative flex items-center transition-all bg-[#091124]/85 border border-slate-850/90 rounded-full py-1.5 px-3 shadow-md focus-within:border-cyan-500/80">
           {isSearching ? (
             <input
               type="text"
               placeholder="Search title..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="bg-transparent border-none text-[10px] outline-none text-zinc-800 w-24 md:w-32 font-sans transition-all"
+              className="bg-transparent border-none text-[10px] outline-none text-slate-100 w-24 md:w-32 font-sans transition-all placeholder-slate-550"
               autoFocus
               onBlur={() => {
                 if (!searchQuery) setIsSearching(false);
@@ -264,17 +225,17 @@ export default function App() {
           ) : (
             <button
               onClick={() => setIsSearching(true)}
-              className="text-[9px] text-zinc-500 hover:text-zinc-800 font-mono flex items-center gap-1 cursor-pointer font-bold uppercase tracking-wider"
+              className="text-[9px] text-slate-400 hover:text-slate-200 font-mono flex items-center gap-1 cursor-pointer font-bold uppercase tracking-wider transition-colors"
             >
               SEARCH
             </button>
           )}
-          <Search className="h-3 w-3 text-zinc-500 ml-1.5" />
+          <Search className="h-3 w-3 text-slate-400 ml-1.5" />
         </div>
       </div>
 
       {/* 4. Core Media TikTok Container */}
-      <div className="relative w-full h-full max-h-screen md:max-h-[85vh] md:aspect-[9/16] md:w-[450px] bg-white border border-stone-250 md:rounded-[36px] overflow-hidden flex flex-col justify-end shadow-[0_15px_60px_rgba(0,0,0,0.06)]">
+      <div className="relative w-full h-full max-h-screen md:max-h-[85vh] md:aspect-[9/16] md:w-[450px] bg-[#040813] border border-slate-800/80 md:rounded-[36px] overflow-hidden flex flex-col justify-end shadow-[0_25px_60px_rgba(0,0,0,0.6)]">
         
         {/* Scroll Snap Feed Lists */}
         <div
@@ -284,13 +245,13 @@ export default function App() {
           style={{ scrollbarWidth: "none" }}
         >
           {feedItems.length === 0 ? (
-            <div className="flex-1 flex flex-col items-center justify-center p-8 text-center space-y-4 bg-stone-50">
-              <ListFilter className="h-10 w-10 text-zinc-400 stroke-1" />
+            <div className="flex-1 flex flex-col items-center justify-center p-8 text-center space-y-4 bg-slate-950/70">
+              <ListFilter className="h-10 w-10 text-slate-500 stroke-1" />
               <div className="space-y-1">
-                <h4 className="text-zinc-700 font-semibold text-sm font-sans uppercase tracking-wider font-bold">
+                <h4 className="text-slate-350 font-semibold text-sm font-sans uppercase tracking-wider font-bold">
                   No Media Available
                 </h4>
-                <p className="text-zinc-400 text-xs max-w-xs leading-relaxed">
+                <p className="text-slate-500 text-xs max-w-xs leading-relaxed">
                   {searchQuery ? "No titles matched your active query filter." : "This custom playlist is empty."}
                 </p>
               </div>
@@ -298,7 +259,7 @@ export default function App() {
               {selectedPlaylistId && (
                 <button
                   onClick={() => setSelectedPlaylistId(null)}
-                  className="mt-2 inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-stone-200 hover:bg-stone-300 text-zinc-700 hover:text-zinc-900 transition-all text-xs font-mono tracking-wider font-bold"
+                  className="mt-2 inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-250 hover:text-white transition-all text-xs font-mono tracking-wider font-bold cursor-pointer"
                 >
                   <RotateCcw className="h-3 w-3" /> RESET FEED
                 </button>
@@ -318,14 +279,14 @@ export default function App() {
         </div>
 
          {/* 5. Clean Bottom Navigation Drawer Bar */}
-        <div className="absolute bottom-0 left-0 right-0 z-30 p-4 pt-10 bg-gradient-to-t from-stone-50 via-stone-50/95 to-transparent flex justify-around items-center">
+        <div className="absolute bottom-0 left-0 right-0 z-30 p-3 pt-5 bg-gradient-to-t from-[#02050e]/60 to-transparent flex justify-around items-center">
           {/* VIEW PLAYLIST */}
           <button
             onClick={() => {
               loadInitialData();
               setIsPlaylistsOpen(true);
             }}
-            className="flex flex-col items-center gap-1 text-stone-500 hover:text-stone-900 transition-colors cursor-pointer group focus:outline-none"
+            className="flex flex-col items-center gap-1 text-slate-400 hover:text-cyan-400 transition-colors cursor-pointer group focus:outline-none"
           >
             <ListFilter className="h-5 w-5 group-hover:scale-105 transition-transform" />
             <span className="text-[10px] tracking-widest font-mono uppercase">PLAYLISTS</span>
@@ -343,13 +304,13 @@ export default function App() {
             className="flex flex-col items-center gap-1 transition-colors cursor-pointer group focus:outline-none"
           >
             {mediaTypeFilter === "all" ? (
-              <Layers className="h-5 w-5 group-hover:scale-105 transition-transform text-sky-500" />
+              <Layers className="h-5 w-5 group-hover:scale-105 transition-transform text-cyan-400" />
             ) : mediaTypeFilter === "video" ? (
-              <Film className="h-5 w-5 group-hover:scale-105 transition-transform text-indigo-500" />
+              <Film className="h-5 w-5 group-hover:scale-105 transition-transform text-indigo-400" />
             ) : (
-              <Image className="h-5 w-5 group-hover:scale-105 transition-transform text-rose-500" />
+              <Image className="h-5 w-5 group-hover:scale-105 transition-transform text-rose-450" />
             )}
-            <span className="text-[10px] tracking-widest font-mono uppercase text-stone-500 group-hover:text-stone-900">
+            <span className="text-[10px] tracking-widest font-mono uppercase text-slate-400 group-hover:text-slate-100">
               {mediaTypeFilter === "all" ? "VIEW: ALL" : mediaTypeFilter === "video" ? "VIDEOS ONLY" : "IMAGES ONLY"}
             </span>
           </button>
@@ -357,7 +318,7 @@ export default function App() {
           {/* GALLERY VIEW */}
           <button
             onClick={() => setIsGalleryOpen(true)}
-            className="flex flex-col items-center gap-1 text-stone-500 hover:text-stone-900 transition-colors cursor-pointer group focus:outline-none"
+            className="flex flex-col items-center gap-1 text-slate-400 hover:text-cyan-400 transition-colors cursor-pointer group focus:outline-none"
           >
             <LayoutGrid className="h-5 w-5 group-hover:scale-105 transition-transform" />
             <span className="text-[10px] tracking-widest font-mono uppercase">GALLERY</span>

@@ -154,7 +154,7 @@ export const MediaFeedItem: React.FC<MediaFeedItemProps> = ({
     <div
       ref={containerRef}
       id={`feed-item-${item.id}`}
-      className="snap-start h-full w-full flex-shrink-0 flex items-center justify-center relative bg-[#FAF9F6] overflow-hidden"
+      className="snap-start h-full w-full flex-shrink-0 flex items-center justify-center relative bg-[#040813] overflow-hidden"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
@@ -167,11 +167,11 @@ export const MediaFeedItem: React.FC<MediaFeedItemProps> = ({
               onDoubleTap();
             }
           }}
-          className="py-1.5 px-3 rounded-full bg-white/85 hover:bg-white border border-stone-200/80 hover:border-stone-400 text-stone-600 hover:text-stone-900 transition-all shadow-sm active:scale-95 group focus:outline-none cursor-pointer flex items-center gap-1.5"
+          className="py-1.5 px-3 rounded-full bg-[#0b1329]/95 hover:bg-[#111e3f] border border-slate-800 hover:border-cyan-500/55 text-slate-350 hover:text-white transition-all shadow-md active:scale-95 group focus:outline-none cursor-pointer flex items-center gap-1.5"
           title="Add current media to playlist"
         >
-          <Plus className="h-3.5 w-3.5 text-emerald-600 group-hover:scale-110 transition-transform" />
-          <span className="text-[9px] font-mono tracking-wider font-bold uppercase text-stone-500 group-hover:text-stone-900">
+          <Plus className="h-3.5 w-3.5 text-cyan-400 group-hover:scale-110 transition-transform" />
+          <span className="text-[9px] font-mono tracking-wider font-bold uppercase text-slate-400 group-hover:text-slate-100">
             ADD TO LIST
           </span>
         </button>
@@ -194,7 +194,7 @@ export const MediaFeedItem: React.FC<MediaFeedItemProps> = ({
             onEnded={onVideoEnded}
           />
         ) : (
-          <div className="w-full h-full flex items-center justify-center bg-[#FAF9F6]">
+          <div className="w-full h-full flex items-center justify-center bg-[#040813]">
             <img
               src={accessToken ? `/api/media/${item.id}?token=${encodeURIComponent(accessToken)}` : `/api/media/${item.id}`}
               alt={item.title}

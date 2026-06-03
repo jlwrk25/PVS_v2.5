@@ -45,17 +45,17 @@ export const ViewPlaylistsModal: React.FC<ViewPlaylistsModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-md animate-fade-in">
-      <div className="bg-stone-50 border border-stone-200/80 rounded-3xl w-full max-w-md overflow-hidden shadow-xl flex flex-col max-h-[85vh]">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/85 backdrop-blur-md animate-fade-in">
+      <div className="bg-[#0b1329] border border-slate-850 rounded-3xl w-full max-w-md overflow-hidden shadow-2xl flex flex-col max-h-[85vh] text-slate-250">
         {/* Header */}
-        <div className="flex justify-between items-center p-5 border-b border-stone-200 bg-stone-100/50">
+        <div className="flex justify-between items-center p-5 border-b border-slate-800 bg-[#0d162a]/70">
           <div>
-            <h3 className="text-sm font-semibold tracking-wider text-stone-900 uppercase">My Playlists</h3>
-            <p className="text-xs text-stone-500 mt-0.5">Filter your scroll-feed state</p>
+            <h3 className="text-sm font-semibold tracking-wider text-slate-100 uppercase">My Playlists</h3>
+            <p className="text-xs text-slate-400 mt-0.5">Filter your scroll-feed state</p>
           </div>
           <button
             onClick={onClose}
-            className="p-1.5 rounded-full hover:bg-stone-200 text-stone-500 hover:text-stone-800 transition-all active:scale-95"
+            className="p-1.5 rounded-full hover:bg-slate-800 text-slate-400 hover:text-slate-200 transition-all active:scale-95 cursor-pointer"
           >
             <X className="h-4 w-4" />
           </button>
@@ -70,11 +70,11 @@ export const ViewPlaylistsModal: React.FC<ViewPlaylistsModalProps> = ({
               placeholder="Create new playlist..."
               value={newPlaylistName}
               onChange={(e) => setNewPlaylistName(e.target.value)}
-              className="flex-1 text-xs px-3.5 py-2.5 rounded-xl bg-white border border-stone-200 focus:outline-none focus:border-stone-400 font-sans text-stone-900 placeholder-stone-400 shadow-xs transition-all"
+              className="flex-1 text-xs px-3.5 py-2.5 rounded-xl bg-[#060a14] border border-slate-800/80 focus:outline-none focus:border-cyan-500 font-sans text-slate-100 placeholder-slate-500 shadow-inner transition-all"
             />
             <button
               type="submit"
-              className="px-4 rounded-xl bg-stone-900 hover:bg-stone-800 text-white font-semibold text-xs transition-all active:scale-95 flex items-center justify-center"
+              className="px-4 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white font-semibold text-xs transition-all active:scale-95 flex items-center justify-center cursor-pointer"
             >
               <Plus className="h-4 w-4" />
             </button>
@@ -90,26 +90,26 @@ export const ViewPlaylistsModal: React.FC<ViewPlaylistsModalProps> = ({
               }}
               className={`p-3.5 rounded-xl cursor-pointer transition-all border flex items-center justify-between ${
                 selectedPlaylistId === null
-                  ? "bg-amber-50/50 border-amber-200/60 text-stone-900 shadow-xs font-medium"
-                  : "bg-white border-stone-200/40 text-stone-600 hover:bg-stone-100/60 hover:text-stone-900 hover:border-stone-300"
+                  ? "bg-cyan-950/40 border-cyan-500/50 text-cyan-400 shadow-xs font-medium"
+                  : "bg-[#101b33]/40 border-slate-800/60 text-slate-300 hover:bg-[#142342] hover:text-white hover:border-slate-700/60"
               }`}
             >
               <div className="flex items-center gap-3">
-                <Play className="h-4 w-4 text-stone-400" />
+                <Play className="h-4 w-4 text-slate-500" />
                 <div>
                   <h4 className="text-xs font-semibold tracking-wide uppercase">All Contents</h4>
-                  <p className="text-[10px] text-stone-550 font-mono mt-0.5">
+                  <p className="text-[10px] text-slate-400 font-mono mt-0.5">
                     {mediaItems.length} ITEMS • RANDOMIZED
                   </p>
                 </div>
               </div>
-              <span className="text-[10px] uppercase font-mono px-2 py-0.5 bg-stone-200 text-stone-700 rounded font-bold">
+              <span className="text-[10px] uppercase font-mono px-2 py-0.5 bg-[#172b54] text-cyan-300 rounded font-bold">
                 DEFAULT
               </span>
             </div>
 
             {playlists.length === 0 ? (
-              <div className="text-center py-6 text-stone-405 text-xs">
+              <div className="text-center py-6 text-slate-500 text-xs">
                 No custom playlists created yet
               </div>
             ) : (
@@ -124,17 +124,17 @@ export const ViewPlaylistsModal: React.FC<ViewPlaylistsModalProps> = ({
                     }}
                     className={`p-3.5 rounded-xl cursor-pointer transition-all border flex items-center justify-between ${
                       isSelected
-                        ? "bg-emerald-50/75 border-emerald-200 text-emerald-700 font-medium shadow-xs"
-                        : "bg-white border-stone-200/40 text-stone-600 hover:bg-stone-100/60 hover:text-stone-900 hover:border-stone-300"
+                        ? "bg-cyan-950/45 border-cyan-500/50 text-cyan-400 font-medium shadow-xs"
+                        : "bg-[#101b33]/40 border-slate-800/60 text-slate-300 hover:bg-[#142342] hover:text-white hover:border-slate-700/65"
                     }`}
                   >
                     <div className="flex items-center gap-3">
-                      <Play className={`h-4 w-4 ${isSelected ? "text-emerald-600" : "text-stone-400"}`} />
+                      <Play className={`h-4 w-4 ${isSelected ? "text-cyan-400" : "text-slate-500"}`} />
                       <div>
                         <h4 className="text-xs font-semibold uppercase tracking-wide truncate max-w-[200px]">
                           {playlist.name}
                         </h4>
-                        <p className="text-[10px] text-stone-500 font-mono mt-0.5">
+                        <p className="text-[10px] text-slate-400 font-mono mt-0.5">
                           {playlist.itemIds.length} MEDIA ITEMS
                         </p>
                       </div>
@@ -142,7 +142,7 @@ export const ViewPlaylistsModal: React.FC<ViewPlaylistsModalProps> = ({
 
                     <button
                       onClick={(e) => handleDelete(playlist.id, e)}
-                      className="p-1.5 rounded-lg hover:bg-red-50 text-stone-400 hover:text-red-500 transition-all active:scale-95"
+                      className="p-1.5 rounded-lg hover:bg-red-950/30 text-slate-400 hover:text-red-400 transition-all active:scale-95 cursor-pointer"
                     >
                       <Trash2 className="h-3.5 w-3.5" />
                     </button>
@@ -197,21 +197,21 @@ export const AddToPlaylistModal: React.FC<AddToPlaylistModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-md animate-fade-in">
-      <div className="bg-stone-50 border border-stone-200/80 rounded-3xl w-full max-w-md overflow-hidden shadow-xl flex flex-col max-h-[85vh]">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/85 backdrop-blur-md animate-fade-in">
+      <div className="bg-[#0b1329] border border-slate-850 rounded-3xl w-full max-w-md overflow-hidden shadow-2xl flex flex-col max-h-[85vh] text-slate-250">
         {/* Header */}
-        <div className="flex justify-between items-center p-5 border-b border-stone-200 bg-stone-100/50">
+        <div className="flex justify-between items-center p-5 border-b border-slate-800 bg-[#0d162a]/70">
           <div>
-            <h3 className="text-xs font-semibold tracking-wider text-stone-500 uppercase">
+            <h3 className="text-xs font-semibold tracking-wider text-slate-400 uppercase">
               Add Active Media
             </h3>
-            <h4 className="text-xs font-semibold text-stone-900 truncate max-w-[260px] lowercase font-mono mt-0.5">
+            <h4 className="text-xs font-semibold text-cyan-400 truncate max-w-[260px] lowercase font-mono mt-0.5">
               {activeItem.title}
             </h4>
           </div>
           <button
             onClick={onClose}
-            className="p-1.5 rounded-full hover:bg-stone-200 text-stone-500 hover:text-stone-800 transition-all active:scale-95"
+            className="p-1.5 rounded-full hover:bg-slate-800 text-slate-400 hover:text-slate-200 transition-all active:scale-95 cursor-pointer"
           >
             <X className="h-4 w-4" />
           </button>
@@ -221,7 +221,7 @@ export const AddToPlaylistModal: React.FC<AddToPlaylistModalProps> = ({
         <div className="flex-1 overflow-y-auto p-5 space-y-4">
           {showCreateInline ? (
             <form onSubmit={handleCreateAndAdd} className="space-y-2">
-              <label className="text-[10px] uppercase font-mono text-stone-500 font-semibold tracking-widest">
+              <label className="text-[10px] uppercase font-mono text-slate-400 font-semibold tracking-widest">
                 Playlist Name
               </label>
               <div className="flex gap-2">
@@ -230,12 +230,12 @@ export const AddToPlaylistModal: React.FC<AddToPlaylistModalProps> = ({
                   placeholder="e.g. Cat Collection"
                   value={newPlaylistName}
                   onChange={(e) => setNewPlaylistName(e.target.value)}
-                  className="flex-1 text-xs px-3.5 py-2.5 rounded-xl bg-white border border-stone-200 focus:outline-none focus:border-stone-400 font-sans text-stone-900 placeholder-stone-400 transition-all"
+                  className="flex-1 text-xs px-3.5 py-2.5 rounded-xl bg-[#060a14] border border-slate-800/80 focus:outline-none focus:border-cyan-500 font-sans text-slate-100 placeholder-slate-500 shadow-inner transition-all"
                   autoFocus
                 />
                 <button
                   type="submit"
-                  className="px-4 rounded-xl bg-stone-900 hover:bg-stone-800 text-white font-semibold text-xs tracking-wide transition-all active:scale-95 flex items-center justify-center"
+                  className="px-4 rounded-xl bg-[#142342] hover:bg-[#1c305c] border border-slate-700 hover:border-slate-600 text-cyan-400 hover:text-white font-semibold text-xs tracking-wide transition-all active:scale-95 flex items-center justify-center cursor-pointer"
                 >
                   Create
                 </button>
@@ -243,7 +243,7 @@ export const AddToPlaylistModal: React.FC<AddToPlaylistModalProps> = ({
               <button
                 type="button"
                 onClick={() => setShowCreateInline(false)}
-                className="text-[10px] uppercase font-mono text-stone-450 hover:text-stone-800 transition-colors"
+                className="text-[10px] uppercase font-mono text-slate-500 hover:text-slate-300 transition-colors cursor-pointer"
               >
                 Cancel
               </button>
@@ -251,7 +251,7 @@ export const AddToPlaylistModal: React.FC<AddToPlaylistModalProps> = ({
           ) : (
             <button
               onClick={() => setShowCreateInline(true)}
-              className="w-full flex items-center justify-center gap-2 p-3 rounded-xl border border-dashed border-stone-300 hover:border-stone-450 bg-stone-100/50 text-xs text-stone-605 hover:text-stone-900 transition-all font-semibold active:scale-[0.99]"
+              className="w-full flex items-center justify-center gap-2 p-3 rounded-xl border border-dashed border-slate-800 hover:border-slate-700 bg-[#101b33]/40 text-xs text-slate-400 hover:text-cyan-400 transition-all font-semibold active:scale-[0.99] cursor-pointer"
             >
               <Plus className="h-4 w-4" /> Create New Playlist
             </button>
@@ -259,11 +259,11 @@ export const AddToPlaylistModal: React.FC<AddToPlaylistModalProps> = ({
 
           {/* Selectable Playlists options */}
           <div className="space-y-1.5">
-            <h5 className="text-[10px] uppercase font-mono text-stone-500 font-semibold tracking-widest px-1 py-1">
+            <h5 className="text-[10px] uppercase font-mono text-slate-400 font-semibold tracking-widest px-1 py-1">
               Select Playlist
             </h5>
             {playlists.length === 0 ? (
-              <div className="text-center py-6 text-stone-400 text-xs">
+              <div className="text-center py-6 text-slate-550 text-xs">
                 No custom playlists available
               </div>
             ) : (
@@ -276,15 +276,15 @@ export const AddToPlaylistModal: React.FC<AddToPlaylistModalProps> = ({
                     onClick={() => handleAddToPlaylist(playlist.id)}
                     className={`w-full text-left p-3.5 rounded-xl border flex items-center justify-between transition-all ${
                       alreadyAdded
-                        ? "bg-stone-100/40 border-stone-200/50 opacity-60 cursor-not-allowed text-stone-400"
-                        : "bg-white border-stone-200/60 hover:border-stone-350 text-stone-700 hover:text-stone-900 hover:bg-stone-50/50"
+                        ? "bg-[#0c162b]/30 border-slate-850/40 opacity-40 cursor-not-allowed text-slate-500"
+                        : "bg-[#101b33]/45 border-slate-800/60 hover:border-slate-700/65 text-slate-300 hover:text-white hover:bg-[#142342] cursor-pointer"
                     }`}
                   >
                     <div>
                       <h4 className="text-xs font-semibold uppercase tracking-wide truncate max-w-[200px]">
                         {playlist.name}
                       </h4>
-                      <p className="text-[10px] text-stone-450 font-mono mt-0.5">
+                      <p className="text-[10px] text-slate-400 font-mono mt-0.5">
                         {playlist.itemIds.length} MEDIA ITEMS
                       </p>
                     </div>
@@ -345,14 +345,14 @@ export const GalleryViewModal: React.FC<GalleryViewModalProps> = ({
   });
 
   return (
-    <div className="fixed inset-0 z-50 bg-stone-50 flex flex-col h-screen w-screen animate-fade-in overflow-hidden">
+    <div className="fixed inset-0 z-50 bg-[#060a13] flex flex-col h-screen w-screen animate-fade-in overflow-hidden">
         {/* Header */}
-        <div className="flex flex-col p-3 px-4 md:px-6 border-b border-stone-250 gap-2.5 bg-stone-100/60">
+        <div className="flex flex-col p-3 px-4 md:px-6 border-b border-slate-850 gap-2.5 bg-[#0b1324]/95">
           {/* Top Line: Select Dropdown & Close Button */}
           <div className="flex items-center justify-between w-full">
             {/* Playlist Filter Selector Dropdown */}
             <div className="flex items-center gap-1.5 flex-1 max-w-[200px]">
-              <span className="text-[9px] font-mono uppercase tracking-widest text-stone-500 hidden sm:inline-block">PLAYLIST:</span>
+              <span className="text-[9px] font-mono uppercase tracking-widest text-slate-400 hidden sm:inline-block">PLAYLIST:</span>
               <select
                 value={selectedPlaylistId || ""}
                 onChange={(e) => {
@@ -361,7 +361,7 @@ export const GalleryViewModal: React.FC<GalleryViewModalProps> = ({
                     onSelectPlaylistId(val || null);
                   }
                 }}
-                className="text-[11px] px-2.5 py-1.5 w-full rounded-md bg-white border border-stone-200/80 focus:outline-none focus:border-stone-400 text-stone-800 font-sans font-medium hover:bg-stone-50 transition-all cursor-pointer shadow-xs"
+                className="text-[11px] px-2.5 py-1.5 w-full rounded-md bg-[#101b33] border border-slate-800 focus:outline-none focus:border-cyan-500 text-slate-200 font-sans font-medium hover:bg-[#142342] transition-all cursor-pointer shadow-xs"
               >
                 <option value="">ALL CONTENT</option>
                 {playlists.map((p) => (
@@ -372,10 +372,10 @@ export const GalleryViewModal: React.FC<GalleryViewModalProps> = ({
               </select>
             </div>
 
-            {/* Custom Green Close Button - smaller */}
+            {/* Close Button - Cyan */}
             <button
               onClick={onClose}
-              className="text-xs font-semibold tracking-wider text-emerald-600 hover:text-emerald-700 transition-all font-mono lowercase cursor-pointer px-2.5 py-1 focus:outline-none"
+              className="text-xs font-semibold tracking-wider text-cyan-400 hover:text-cyan-305 transition-all font-mono lowercase cursor-pointer px-2.5 py-1 focus:outline-none"
             >
               close
             </button>
@@ -385,27 +385,27 @@ export const GalleryViewModal: React.FC<GalleryViewModalProps> = ({
           <div className="flex items-center gap-2 w-full">
             {/* Embedded Search */}
             <div className="relative flex-1">
-              <Search className="absolute left-2.5 top-2 h-3.5 w-3.5 text-stone-400" />
+              <Search className="absolute left-2.5 top-2 h-3.5 w-3.5 text-slate-500" />
               <input
                 type="text"
                 placeholder="Search gallery..."
                 value={searchQuery}
                 aria-label="Search items"
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full text-xs pl-7.5 pr-2 py-1 rounded bg-white border border-stone-200 focus:outline-none focus:border-stone-400 text-stone-900 placeholder-stone-400 font-sans transition-all shadow-xs"
+                className="w-full text-xs pl-7.5 pr-2 py-1 rounded bg-[#0c1326] border border-slate-800 focus:outline-none focus:border-cyan-500 text-slate-100 placeholder-slate-500 font-sans transition-all shadow-inner"
               />
             </div>
 
             {/* Type Filter Buttons - even lighter */}
-            <div className="flex border border-stone-200 bg-stone-100/40 p-0.5 rounded">
+            <div className="flex border border-slate-800 bg-[#090f1b] p-0.5 rounded">
               {(["all", "video", "image"] as const).map((t) => (
                 <button
                   key={t}
                   onClick={() => setFilterType(t)}
-                  className={`text-[9px] uppercase tracking-wider font-mono font-bold px-2 py-1 rounded transition-all ${
+                  className={`text-[9px] uppercase tracking-wider font-mono font-bold px-2 py-1 rounded transition-all cursor-pointer ${
                     filterType === t
-                      ? "bg-white text-stone-900 shadow-xs border border-stone-200/40"
-                      : "text-stone-550 hover:text-stone-800"
+                      ? "bg-cyan-600 text-white shadow-xs border-none"
+                      : "text-slate-400 hover:text-slate-200"
                   }`}
                 >
                   {t}
@@ -416,9 +416,9 @@ export const GalleryViewModal: React.FC<GalleryViewModalProps> = ({
         </div>
 
         {/* Catalog Grid */}
-        <div className="flex-1 overflow-y-auto p-4 sm:p-6 bg-stone-100/40">
+        <div className="flex-1 overflow-y-auto p-4 sm:p-6 bg-[#060a13]">
           {filteredItems.length === 0 ? (
-            <div className="text-center py-24 text-stone-400 text-xs">
+            <div className="text-center py-24 text-slate-500 text-xs">
               No matching media items found at this filter
             </div>
           ) : (
@@ -431,41 +431,41 @@ export const GalleryViewModal: React.FC<GalleryViewModalProps> = ({
                         onSelectIndex(item, selectedPlaylistId, filterType);
                         onClose();
                     }}
-                    className="group relative aspect-square rounded-2xl bg-white border border-stone-200 hover:border-stone-400 overflow-hidden cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:shadow-md active:scale-95"
+                    className="group relative aspect-square rounded-2xl bg-[#0b1324] border border-slate-850 hover:border-cyan-500/60 overflow-hidden cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:shadow-lg active:scale-95"
                   >
                     {/* Media Thumbnail */}
                     {item.type === "video" ? (
-                      <div className="w-full h-full relative flex items-center justify-center bg-stone-100">
+                      <div className="w-full h-full relative flex items-center justify-center bg-[#050912]">
                         <video
                           src={accessToken ? `/api/media/${item.id}?token=${encodeURIComponent(accessToken)}#t=0.5` : `/api/media/${item.id}#t=0.5`}
                           preload="metadata"
-                          className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity"
+                          className="w-full h-full object-cover opacity-75 group-hover:opacity-100 transition-opacity"
                           muted
                           playsInline
                         />
-                        <div className="absolute inset-0 bg-stone-950/15 group-hover:bg-transparent transition-colors" />
-                        <div className="absolute top-2 right-2 bg-stone-900/80 p-1 rounded-md text-white border border-white/5 z-15 shadow-sm">
+                        <div className="absolute inset-0 bg-slate-950/30 group-hover:bg-transparent transition-colors" />
+                        <div className="absolute top-2 right-2 bg-slate-950/80 p-1 rounded-md text-cyan-400 border border-slate-800 z-15 shadow-sm">
                           <Film className="h-3 w-3" />
                         </div>
                       </div>
                     ) : (
-                      <div className="w-full h-full relative flex items-center justify-center bg-stone-100">
+                      <div className="w-full h-full relative flex items-center justify-center bg-[#050912]">
                         <img
                           src={accessToken ? `/api/media/${item.id}?token=${encodeURIComponent(accessToken)}` : `/api/media/${item.id}`}
                           alt={item.title}
-                          className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity"
+                          className="w-full h-full object-cover opacity-75 group-hover:opacity-100 transition-opacity"
                           referrerPolicy="no-referrer"
                         />
-                        <div className="absolute inset-0 bg-stone-950/15 group-hover:bg-transparent transition-colors" />
-                        <div className="absolute top-2 right-2 bg-stone-900/80 p-1 rounded-md text-white border border-white/5 z-15 shadow-sm">
+                        <div className="absolute inset-0 bg-slate-950/30 group-hover:bg-transparent transition-colors" />
+                        <div className="absolute top-2 right-2 bg-slate-950/80 p-1 rounded-md text-cyan-400 border border-slate-800 z-15 shadow-sm">
                           <ImageIcon className="h-3 w-3" />
                         </div>
                       </div>
                     )}
 
                     {/* Meta info Hover footer */}
-                    <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-stone-900/90 via-stone-900/40 to-transparent p-3 flex flex-col justify-end translate-y-2 group-hover:translate-y-0 transition-all duration-300">
-                      <p className="text-[10px] text-white lowercase font-mono truncate">
+                    <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-slate-950 via-slate-950/60 to-transparent p-3 flex flex-col justify-end translate-y-2 group-hover:translate-y-0 transition-all duration-300">
+                      <p className="text-[10px] text-slate-350 lowercase font-mono truncate">
                         {item.title}
                       </p>
                     </div>
