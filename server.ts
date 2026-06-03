@@ -1,15 +1,24 @@
 import express from "express";
 import path from "path";
-import { fileURLToPath } from "url";
+import fs from "fs";
 import { Readable } from "stream";
 import { createServer as createViteServer } from "vite";
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+// Load Google API Key from Firebase client config if available
+let googleApiKey = "";
+try {
+  const configPath = path.resolve(process.cwd(), "firebase-applet-config.json");
+  if (fs.existsSync(configPath)) {
+    const config = JSON.parse(fs.readFileSync(configPath, "utf8"));
+    googleApiKey = config.apiKey || "";
+  }
+} catch (error) {
+  console.error("Failed to load firebase apiKey for Google Drive fallback:", error);
+}
 
 async function startServer() {
   const app = express();
-  const PORT = 3000;
+  const PORT = Number(process.env.PORT) || 3000; // Added process.env.PORT to allow Render to assign the port dynamically
 
   // Middleware for parsing JSON requests
   app.use(express.json());
@@ -37,61 +46,72 @@ async function startServer() {
         headers["Authorization"] = `Bearer ${token}`;
         const driveUrl = `https://www.googleapis.com/drive/v3/files/${id}?alt=media`;
         googleRes = await fetch(driveUrl, { headers });
+      } else if (googleApiKey) {
+        // Public files can be fetched officially from GDrive REST API with our Firebase-associated Google API key
+        // This is extremely robust, bypassing any datacentre restrictions or virus scan interstitials!
+        const driveUrl = `https://www.googleapis.com/drive/v3/files/${id}?alt=media&key=${googleApiKey}`;
+        googleRes = await fetch(driveUrl, { headers });
+
+        if (!googleRes.ok) {
+          console.warn(`Drive Media Proxy API fetch failed with status ${googleRes.status}. Falling back to uc link...`);
+          const initialUrl = `https://docs.google.com/uc?export=download&id=${id}`;
+          googleRes = await fetch(initialUrl, { headers });
+        }
       } else {
-        // Public file access
+        // Public file access fallback
         const initialUrl = `https://docs.google.com/uc?export=download&id=${id}`;
         googleRes = await fetch(initialUrl, { headers });
+      }
 
-        const contentType = googleRes.headers.get("content-type") || "";
+      const contentType = googleRes.headers.get("content-type") || "";
 
-        // Large files trigger a "can't scan for viruses" warning page in HTML
-        if (contentType.includes("text/html")) {
-          const html = await googleRes.text();
+      // Large files trigger a "can't scan for viruses" warning page in HTML
+      if (contentType.includes("text/html")) {
+        const html = await googleRes.text();
 
-          // Extract confirmation token from warning HTML
-          let confirmToken = "";
-          const confirmMatch = html.match(/confirm=([a-zA-Z0-9_-]+)/i);
-          if (confirmMatch) {
-            confirmToken = confirmMatch[1];
-          } else {
-            const nameConfirmMatch = html.match(/name="confirm"[^>]*?value="([a-zA-Z0-9_-]+)"/i) ||
-                               html.match(/value="([a-zA-Z0-9_-]+)"[^>]*?name="confirm"/i);
-            if (nameConfirmMatch) {
-              confirmToken = nameConfirmMatch[1];
-            }
+        // Extract confirmation token from warning HTML
+        let confirmToken = "";
+        const confirmMatch = html.match(/confirm=([a-zA-Z0-9_-]+)/i);
+        if (confirmMatch) {
+          confirmToken = confirmMatch[1];
+        } else {
+          const nameConfirmMatch = html.match(/name="confirm"[^>]*?value="([a-zA-Z0-9_-]+)"/i) ||
+                                   html.match(/value="([a-zA-Z0-9_-]+)"[^>]*?name="confirm"/i);
+          if (nameConfirmMatch) {
+            confirmToken = nameConfirmMatch[1];
+          }
+        }
+
+        if (confirmToken) {
+          // Google Drive requires back-sending any warnings cookies that were sent
+          const setCookies = googleRes.headers.getSetCookie 
+            ? googleRes.headers.getSetCookie() 
+            : (googleRes.headers.get("set-cookie") ? [googleRes.headers.get("set-cookie")!] : []);
+          
+          const cookiesList = setCookies.map(cookie => cookie.split(";")[0]);
+          const cookieHeader = cookiesList.join("; ");
+
+          const finalUrl = `https://docs.google.com/uc?export=download&id=${id}&confirm=${confirmToken}`;
+          const finalHeaders: Record<string, string> = { ...headers };
+          if (cookieHeader) {
+            finalHeaders["Cookie"] = cookieHeader;
           }
 
-          if (confirmToken) {
-            // Google Drive requires back-sending any warnings cookies that were sent
-            const setCookies = googleRes.headers.getSetCookie 
-              ? googleRes.headers.getSetCookie() 
-              : (googleRes.headers.get("set-cookie") ? [googleRes.headers.get("set-cookie")!] : []);
-            
-            const cookiesList = setCookies.map(cookie => cookie.split(";")[0]);
-            const cookieHeader = cookiesList.join("; ");
-
-            const finalUrl = `https://docs.google.com/uc?export=download&id=${id}&confirm=${confirmToken}`;
-            const finalHeaders: Record<string, string> = { ...headers };
-            if (cookieHeader) {
-              finalHeaders["Cookie"] = cookieHeader;
-            }
-
-            googleRes = await fetch(finalUrl, { headers: finalHeaders });
-          } else {
-            console.warn(`Drive Media Proxy: HTML page returned for ID ${id} but no confirm token found.`);
-          }
+          googleRes = await fetch(finalUrl, { headers: finalHeaders });
+        } else {
+          console.warn(`Drive Media Proxy: HTML page returned for ID ${id} but no confirm token found.`);
         }
       }
 
       const status = googleRes.status;
-      const contentType = googleRes.headers.get("content-type") || "application/octet-stream";
+      const responseContentType = googleRes.headers.get("content-type") || "application/octet-stream";
       const contentLength = googleRes.headers.get("content-length");
       const contentRange = googleRes.headers.get("content-range");
       const acceptRanges = googleRes.headers.get("accept-ranges");
 
       // Set response headers to match what Google specifies (or fallback)
       res.status(status);
-      res.setHeader("Content-Type", contentType);
+      res.setHeader("Content-Type", responseContentType);
       
       if (contentLength) res.setHeader("Content-Length", contentLength);
       if (contentRange) res.setHeader("Content-Range", contentRange);
@@ -138,7 +158,7 @@ async function startServer() {
   }
 
   app.listen(PORT, "0.0.0.0", () => {
-    console.log(`Server successfully started on http://0.0.0.0:${PORT}`);
+    console.log(`Server successfully started on port ${PORT}`);
   });
 }
 
