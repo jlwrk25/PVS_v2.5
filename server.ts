@@ -30,13 +30,58 @@ async function startServer() {
         headers["Range"] = rangeHeader;
       }
 
-      let driveUrl = `https://docs.google.com/uc?export=download&id=${id}&confirm=t`;
-      if (token) {
-        headers["Authorization"] = `Bearer ${token}`;
-        driveUrl = `https://www.googleapis.com/drive/v3/files/${id}?alt=media`;
-      }
+      let googleRes: Response;
 
-      const googleRes = await fetch(driveUrl, { headers });
+      if (token) {
+        // If we have an OAuth token, we can stream directly from GDrive REST API
+        headers["Authorization"] = `Bearer ${token}`;
+        const driveUrl = `https://www.googleapis.com/drive/v3/files/${id}?alt=media`;
+        googleRes = await fetch(driveUrl, { headers });
+      } else {
+        // Public file access
+        const initialUrl = `https://docs.google.com/uc?export=download&id=${id}`;
+        googleRes = await fetch(initialUrl, { headers });
+
+        const contentType = googleRes.headers.get("content-type") || "";
+
+        // Large files trigger a "can't scan for viruses" warning page in HTML
+        if (contentType.includes("text/html")) {
+          const html = await googleRes.text();
+
+          // Extract confirmation token from warning HTML
+          let confirmToken = "";
+          const confirmMatch = html.match(/confirm=([a-zA-Z0-9_-]+)/i);
+          if (confirmMatch) {
+            confirmToken = confirmMatch[1];
+          } else {
+            const nameConfirmMatch = html.match(/name="confirm"[^>]*?value="([a-zA-Z0-9_-]+)"/i) ||
+                               html.match(/value="([a-zA-Z0-9_-]+)"[^>]*?name="confirm"/i);
+            if (nameConfirmMatch) {
+              confirmToken = nameConfirmMatch[1];
+            }
+          }
+
+          if (confirmToken) {
+            // Google Drive requires back-sending any warnings cookies that were sent
+            const setCookies = googleRes.headers.getSetCookie 
+              ? googleRes.headers.getSetCookie() 
+              : (googleRes.headers.get("set-cookie") ? [googleRes.headers.get("set-cookie")!] : []);
+            
+            const cookiesList = setCookies.map(cookie => cookie.split(";")[0]);
+            const cookieHeader = cookiesList.join("; ");
+
+            const finalUrl = `https://docs.google.com/uc?export=download&id=${id}&confirm=${confirmToken}`;
+            const finalHeaders: Record<string, string> = { ...headers };
+            if (cookieHeader) {
+              finalHeaders["Cookie"] = cookieHeader;
+            }
+
+            googleRes = await fetch(finalUrl, { headers: finalHeaders });
+          } else {
+            console.warn(`Drive Media Proxy: HTML page returned for ID ${id} but no confirm token found.`);
+          }
+        }
+      }
 
       const status = googleRes.status;
       const contentType = googleRes.headers.get("content-type") || "application/octet-stream";
@@ -57,7 +102,7 @@ async function startServer() {
       res.setHeader("Access-Control-Allow-Methods", "GET, HEAD, OPTIONS");
       res.setHeader("Access-Control-Allow-Headers", "Range, Content-Type, Content-Length");
 
-      // Handle HEAD requests easily
+      // Handle HEAD/OPTIONS requests
       if (req.method === "OPTIONS" || req.method === "HEAD") {
         return res.end();
       }
